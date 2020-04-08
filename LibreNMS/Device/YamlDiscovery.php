@@ -25,6 +25,7 @@
 
 namespace LibreNMS\Device;
 
+use Illuminate\Support\Str;
 use LibreNMS\Interfaces\Discovery\DiscoveryItem;
 use LibreNMS\OS;
 
@@ -81,7 +82,7 @@ class YamlDiscovery
                     foreach ($data as $name => $value) {
                         if ($name == '$oid' || $name == 'skip_values') {
                             $current_data[$name] = $value;
-                        } elseif (str_contains($value, '{{')) {
+                        } elseif (Str::contains($value, '{{')) {
                             // replace embedded values
                             $current_data[$name] = static::replaceValues($name, $index, $count, $data, $pre_cache);
                         } else {
@@ -260,7 +261,7 @@ class YamlDiscovery
                 // Dynamic skipping of data
                 $op = isset($skip_value['op']) ? $skip_value['op'] : '!=';
                 $tmp_value = static::getValueFromData($skip_value['oid'], $index, $yaml_item_data, $pre_cache);
-                if (str_contains($skip_value['oid'], '.')) {
+                if (Str::contains($skip_value['oid'], '.')) {
                     list($skip_value['oid'], $targeted_index) = explode('.', $skip_value['oid'], 2);
                     $tmp_value = static::getValueFromData($skip_value['oid'], $targeted_index, $yaml_item_data, $pre_cache);
                 }

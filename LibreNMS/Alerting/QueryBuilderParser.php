@@ -27,6 +27,7 @@ namespace LibreNMS\Alerting;
 
 use LibreNMS\Config;
 use LibreNMS\DB\Schema;
+use Illuminate\Support\Str;
 
 class QueryBuilderParser implements \JsonSerializable
 {
@@ -116,7 +117,7 @@ class QueryBuilderParser implements \JsonSerializable
         foreach ($rules['rules'] as $rule) {
             if (array_key_exists('rules', $rule)) {
                 $tables = array_merge($this->findTablesRecursive($rule), $tables);
-            } elseif (str_contains($rule['field'], '.')) {
+            } elseif (Str::contains($rule['field'], '.')) {
                 list($table, $column) = explode('.', $rule['field']);
 
                 if ($table == 'macros') {
@@ -329,14 +330,14 @@ class QueryBuilderParser implements \JsonSerializable
      */
     protected function expandMacro($subject, $tables_only = false, $depth_limit = 20)
     {
-        if (!str_contains($subject, 'macros.')) {
+        if (!Str::contains($subject, 'macros.')) {
             return $subject;
         }
 
         $macros = Config::get('alert.macros.rule');
 
         $count = 0;
-        while ($count++ < $depth_limit && str_contains($subject, 'macros.')) {
+        while ($count++ < $depth_limit && Str::contains($subject, 'macros.')) {
             $subject = preg_replace_callback('/%?macros.([^ =()]+)/', function ($matches) use ($macros) {
                 $name = $matches[1];
                 if (isset($macros[$name])) {
