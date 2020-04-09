@@ -189,7 +189,7 @@ class QueryBuilderParser implements \JsonSerializable
                 $value = '1';
             } else {
                 // value is a field, mark it with backticks
-                if (starts_with($value, '%')) {
+                if (Str::startsWith($value, '%')) {
                     $value = '`' . ltrim($value, '%') . '`';
                 } else {
                     // but if it has quotes just remove the %
@@ -296,7 +296,7 @@ class QueryBuilderParser implements \JsonSerializable
         $op = self::$operators[$builder_op];
         $value = $rule['value'];
 
-        if (is_string($value) && starts_with($value, '`') && ends_with($value, '`')) {
+        if (is_string($value) && Str::startsWith($value, '`') && Str::endsWith($value, '`')) {
             // pass through value such as field
             $value = trim($value, '`');
             if ($expand) {
@@ -357,7 +357,7 @@ class QueryBuilderParser implements \JsonSerializable
         $subject = preg_replace('/%([^%.]+)\./', '$1.', $subject);
 
         // wrap entire macro result in parenthesis if needed
-        if (!(starts_with($subject, '(') && ends_with($subject, ')'))) {
+        if (!(Str::startsWith($subject, '(') && Str::endsWith($subject, ')'))) {
             $subject = "($subject)";
         }
 
@@ -407,7 +407,7 @@ class QueryBuilderParser implements \JsonSerializable
             $this->schema->getColumns($parent),
             $this->schema->getColumns($child)
         ), function ($table) {
-            return ends_with($table, '_id');
+            return Str::endsWith($table, '_id');
         });
 
         if (count($shared_keys) === 1) {
@@ -426,7 +426,7 @@ class QueryBuilderParser implements \JsonSerializable
 
         if (!$this->schema->columnExists($child, $child_key)) {
             // if they don't match, guess the column name from the parent
-            if (ends_with($parent, 'xes')) {
+            if (Str::endsWith($parent, 'xes')) {
                 $child_key = substr($parent, 0, -2) . '_id';
             } else {
                 $child_key = preg_replace('/s$/', '_id', $parent);

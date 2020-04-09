@@ -26,6 +26,7 @@
 namespace LibreNMS\Device;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use LibreNMS\Interfaces\Discovery\DiscoveryItem;
 use LibreNMS\OS;
 
@@ -224,7 +225,7 @@ class YamlDiscovery
                         foreach ((array)$data['oid'] as $oid) {
                             if (!array_key_exists($oid, $pre_cache)) {
                                 if (isset($data['snmp_flags'])) {
-                                    $snmp_flag = array_wrap($data['snmp_flags']);
+                                    $snmp_flag = Arr::wrap($data['snmp_flags']);
                                 } else {
                                     $snmp_flag = ['-OteQUs'];
                                 }

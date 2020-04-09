@@ -363,7 +363,7 @@ class ModuleTestHelper
                     $result[] = "$oid|4|"; // empty data, we don't know type, put string
                 } else {
                     list($raw_type, $data) = explode(':', $raw_data, 2);
-                    if (starts_with($raw_type, 'Wrong Type (should be ')) {
+                    if (Str::startsWith($raw_type, 'Wrong Type (should be ')) {
                         // device returned the wrong type, save the wrong type to emulate the device behavior
                         list($raw_type, $data) = explode(':', ltrim($data), 2);
                     }

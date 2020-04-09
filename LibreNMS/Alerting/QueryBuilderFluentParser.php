@@ -133,14 +133,14 @@ class QueryBuilderFluentParser extends QueryBuilderParser
     protected function expandRule($rule)
     {
         $field = $rule['field'];
-        if (starts_with($field, 'macros.')) {
+        if (Str::startsWith($field, 'macros.')) {
             $field = DB::raw($this->expandMacro($field));
         }
 
         $op = $rule['operator'];
 
         $value = $rule['value'];
-        if (!is_array($value) && starts_with($value, '`') && ends_with($value, '`')) {
+        if (!is_array($value) && Str::startsWith($value, '`') && Str::endsWith($value, '`')) {
             $value = DB::raw($this->expandMacro(trim($value, '`')));
         }
 

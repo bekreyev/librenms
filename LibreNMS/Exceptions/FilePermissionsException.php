@@ -42,7 +42,7 @@ class FilePermissionsException extends \Exception implements UpgradeableExceptio
     {
         // cannot write to storage directory
         if ($exception instanceof \ErrorException &&
-            starts_with($exception->getMessage(), 'file_put_contents(') &&
+            Str::startsWith($exception->getMessage(), 'file_put_contents(') &&
             Str::contains($exception->getMessage(), '/storage/')) {
             return new static();
         }
