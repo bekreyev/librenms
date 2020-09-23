@@ -31,7 +31,7 @@
                     "os": "eltex-olt",
                     "type": "network",
                     "serial": null,
-                    "icon": "eltex.png",
+                    "icon": "eltex.svg",
                     "location": null
                 }
             ]
